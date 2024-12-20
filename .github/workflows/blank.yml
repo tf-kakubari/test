@@ -4,11 +4,7 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -34,3 +30,13 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      - name: result
+        run: |
+          echo Title ${{ github.event.pull_request.title }}
+          if echo ${{ github.event.pull_request.title }} | grep -iq "False"; then
+              echo "Error: The variable contains 'False' (case insensitive)." >&2
+              exit 1
+          else
+              echo "The variable does not contain 'False'."
+          fi
